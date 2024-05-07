@@ -63,17 +63,17 @@ $$
 
 The Koopman operator theory involves defining observables, which are functions of the state, and then identifying the dynamics of these observables in their infinite dimensional function space. Under some constraints, these observables follow linear dynamics which can be described a linear operator colloquially called the Koopman operator. In this section we follow the description of the original paper and describe the Koopman operator treatment for a discrete time dynamical system. 
 
-Consider a $m$ dimensional state vector $\textbf{x}$, such that some discrete dynamical system $(\mathcal{M}, t, T )$ be parameterized by the state space variables $\textbf{x} = [x_1, x_2, .., x_m \  \in \mathcal{M}  \subset \mathbf{R}^m$, where the evolution of $\textbf{x}$ over discrete time $t \in Z$ is governed by the dynamical map $T : \mathcal{M} \rightarrow \mathcal{M}$. With this we can say:
+Consider a $m$ dimensional state vector $\bf{x}$, such that some discrete dynamical system $(\mathcal{M}, t, T )$ be parameterized by the state space variables $\bf{x} = [x_1, x_2, .., x_m] \  \in \mathcal{M}  \subset \mathbf{R}^m$, where the evolution of $\bf{x}$ over discrete time $t \in Z$ is governed by the dynamical map $T : \mathcal{M} \rightarrow \mathcal{M}$. With this we can say:
 $$
-\textbf{x}(t + 1) = T (\textbf{x}(t))
+\bf{x}(t + 1) = T (\bf{x}(t))
 $$
 The authors assume the systems under study are autonomous (T is not explicitly dependent on t). Now let $g : \mathcal{M} \rightarrow \mathbf{C}$ be the observable of interest. Here, we assume that $g \in \mathcal{F} = \mathcal{L}^2(\mathcal{M}, \sigma)$, where $\sigma$ is a positive single value function that acts as the measure for the functional space. The Koopman operator is defined to be the object $K : \mathcal{F} \rightarrow \mathcal{F}$ that supplies the following action for $g$,
 $$
-Kg(\textbf{x}) = g \cdot T(\textbf{x})
+Kg(\bf{x}) = g \cdot T(\bf{x})
 $$
-$K$ is an object that lifts the dynamics from the original, possibly nonlinear, dynamical system $(\mathcal{M}, t, T )$ to a new, certainly linear, dynamical system $(\mathcal{F}, t, K )$. This can be then extended to multiple observables $\textbf{g} = [g_1, g_2, ..., g_k]$. 
+$K$ is an object that lifts the dynamics from the original, possibly nonlinear, dynamical system $(\mathcal{M}, t, T )$ to a new, certainly linear, dynamical system $(\mathcal{F}, t, K )$. This can be then extended to multiple observables $\bf{g} = [g_1, g_2, ..., g_k]$. 
 $$
-K\textbf{g}(\textbf{x}) = \textbf{g} \cdot T(\textbf{x})
+K\bf{g}(\bf{x}) = \bf{g} \cdot T(\bf{x})
 $$
 As we know, linear dynamics are a solved domain in dynamical systems, but it is important to note that $K$ is an infinite dimensional operator. 
 
@@ -92,8 +92,27 @@ To approximate the Koopman operator, the authors use the finite section method, 
 The theoretically coherent thing to do would be to record every weight of the neural network as a column of the matrix, and subsequently apply the finite section method on them. The authors posit the computational complexity of this might be be intractable due to the size of the neural network and thus provide a spectrum of sub-optimal approximation. This spectrum spans building the matrix (a scalar) for each weight, for each node, for each layer or for the entire network (the right thing to do). The authors use node-wise dynamics justifying it with the trade-off against computational complexity. Here a node, refers to all the weights from a layer $i$ used for a single activation in layer $i+1$.
 
 
-$\dagger$: We note here, that the authors actually use the projection function $\pi_i(\textbf{x}) = x_i$ as the observable, and use all the projection functions ($\pi_1, \pi_2, ... \pi_m$) to build the observable list, since the identity observable $\textbf{I}(\textbf{w}) = \textbf{w}$, as defined in the paper, that returns the state vector does not satisfy the $\mathcal{L}^2$ requirement of the observable.
+$\dagger$: We note here, that the authors actually use the projection function $\pi_i(\bf{x}) = x_i$ as the observable, and use all the projection functions ($\pi_1, \pi_2, ... \pi_m$) to build the observable list, since the identity observable $\bf{I}(\bf{w}) = \bf{w}$, as defined in the paper, that returns the state vector does not satisfy the $\mathcal{L}^2$ requirement of the observable.
 
 ## Results:
 
-The results do not match the results of the authero
+We test the method on training a simple feedforward MNIST classfier. The results do not match the results of that of the authors. 
+
+For 1 epoch comparison of ADADelta against Node-wise Koopman and Layer-wise Koopman respectively:
+
+
+![alt text](epoch1/combined11.jpg)
+Figure 1: Nodewise Koopman vs ADADelta for 1 epoch
+
+![alt text](epoch1/combined12.jpg)
+Figure 2: Layerwise Koopman vs ADADelta for 1 epoch
+
+
+For 2 epoch comparison of ADADelta against Node-wise Koopman and Layer-wise Koopman respectively:
+
+
+![alt text](epoch2/combined21.jpg)
+Figure 3: Nodewise Koopman vs ADADelta for 2 epochs
+
+![alt text](epoch2/combined22.jpg)
+Figure 4: Layerwise Koopman vs ADADelta for 2 epochs
